@@ -5,8 +5,10 @@ import { courseAPI } from '../../services/api';
 import { FiArrowLeft, FiUpload } from 'react-icons/fi';
 
 // Replace these with your actual Cloudinary details
-const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'your-cloud-name';
-const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'your-unsigned-preset';
+const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'onlinelecture';
+const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'OnlineLecture';
+
+console.log('CLOUDINARY CONFIG:', { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET });
 
 function AddCourse() {
   const [name, setName] = useState('');
