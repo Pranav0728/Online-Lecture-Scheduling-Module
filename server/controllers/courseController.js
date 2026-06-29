@@ -15,6 +15,9 @@ export const createCourse = async (req, res) => {
     await course.save();
     res.json(course);
   } catch (error) {
+    console.log(error);
+    console.log(error.message);
+    console.log(error.stack);
     console.error("Error from controller",error);
     res.status(500).json({ message: 'Server error' });
   }
