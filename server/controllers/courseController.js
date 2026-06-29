@@ -2,8 +2,32 @@ import Course from '../models/Course.js';
 
 export const createCourse = async (req, res) => {
   try {
+    console.log('=== Request Body ===');
+    console.log(req.body);
+    console.log('=== Request File ===');
+    console.log(req.file);
+    console.log('=== All Request Files ===');
+    console.log(req.files);
+
     const { name, level, description } = req.body;
-    const image = req.file.path;
+
+    // Check if file exists
+    if (!req.file) {
+      console.error('No file uploaded');
+      return res.status(400).json({ message: 'Image file is required' });
+    }
+
+    // Check what properties are available on req.file
+    console.log('req.file keys:', Object.keys(req.file));
+    console.log('req.file.path:', req.file.path);
+    console.log('req.file.filename:', req.file.filename);
+    console.log('req.file.url:', req.file.url);
+
+    const image = req.file.path || req.file.url;
+    if (!image) {
+      console.error('No image URL found in req.file');
+      return res.status(400).json({ message: 'Failed to get image URL' });
+    }
 
     const course = new Course({
       name,
@@ -11,15 +35,21 @@ export const createCourse = async (req, res) => {
       description,
       image
     });
+
+    console.log('=== Course to Save ===');
     console.log(course);
+
     await course.save();
+    console.log('Course saved successfully');
     res.json(course);
   } catch (error) {
-    console.log(error);
-    console.log(error.message);
-    console.log(error.stack);
-    console.error("Error from controller",error);
-    res.status(500).json({ message: 'Server error' });
+    console.error('=== FULL ERROR ===');
+    console.error(error);
+    console.error('=== ERROR MESSAGE ===');
+    console.error(error.message);
+    console.error('=== ERROR STACK ===');
+    console.error(error.stack);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
