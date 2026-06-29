@@ -35,7 +35,7 @@ PORT=8080
 
 #### Seed Dummy Instructors
 First, seed the dummy instructors by visiting:
-`http://localhost:8080/api/instructors/seed`
+`https://online-lecture-scheduling-module-ginz.onrender.com/api/instructors/seed`
 
 #### Backend
 ```bash

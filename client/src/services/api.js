@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api';
+const API_URL = 'https://online-lecture-scheduling-module-ginz.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -43,6 +43,6 @@ export const lectureAPI = {
   delete: (id) => api.delete(`/lectures/${id}`),
 };
 
-export const getImageUrl = (filename) => `http://localhost:8080/uploads/${filename}`;
+export const getImageUrl = (filename) => `https://online-lecture-scheduling-module-ginz.onrender.com/uploads/${filename}`;
 
 export default api;
