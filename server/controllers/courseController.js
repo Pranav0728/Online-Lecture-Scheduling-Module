@@ -3,7 +3,7 @@ import Course from '../models/Course.js';
 export const createCourse = async (req, res) => {
   try {
     const { name, level, description } = req.body;
-    const image = req.file.path; // Cloudinary URL
+    const image = req.file.path;
 
     const course = new Course({
       name,
@@ -11,7 +11,7 @@ export const createCourse = async (req, res) => {
       description,
       image
     });
-
+    console.log(course);
     await course.save();
     res.json(course);
   } catch (error) {
