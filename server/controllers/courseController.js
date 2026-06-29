@@ -1,15 +1,9 @@
 import Course from '../models/Course.js';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import fs from 'fs';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 export const createCourse = async (req, res) => {
   try {
     const { name, level, description } = req.body;
-    const image = req.file.filename;
+    const image = req.file.path; // Cloudinary URL
 
     const course = new Course({
       name,
@@ -21,6 +15,7 @@ export const createCourse = async (req, res) => {
     await course.save();
     res.json(course);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -57,11 +52,7 @@ export const updateCourse = async (req, res) => {
     let image = course.image;
     
     if (req.file) {
-      const oldPath = path.join(__dirname, '../uploads', course.image);
-      if (fs.existsSync(oldPath)) {
-        fs.unlinkSync(oldPath);
-      }
-      image = req.file.filename;
+      image = req.file.path; // Cloudinary URL
     }
 
     course = await Course.findByIdAndUpdate(
@@ -72,6 +63,7 @@ export const updateCourse = async (req, res) => {
 
     res.json(course);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -83,14 +75,10 @@ export const deleteCourse = async (req, res) => {
       return res.status(404).json({ message: 'Course not found' });
     }
 
-    const imagePath = path.join(__dirname, '../uploads', course.image);
-    if (fs.existsSync(imagePath)) {
-      fs.unlinkSync(imagePath);
-    }
-
     await Course.findByIdAndDelete(req.params.id);
     res.json({ message: 'Course deleted' });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 };

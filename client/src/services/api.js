@@ -43,6 +43,6 @@ export const lectureAPI = {
   delete: (id) => api.delete(`/lectures/${id}`),
 };
 
-export const getImageUrl = (filename) => `https://online-lecture-scheduling-module-ginz.onrender.com/uploads/${filename}`;
+export const getImageUrl = (url) => url;
 
 export default api;
