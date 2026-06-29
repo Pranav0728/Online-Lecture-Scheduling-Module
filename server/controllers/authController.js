@@ -25,7 +25,7 @@ export const login = async (req, res) => {
     }
 
     const instructor = await Instructor.findOne({ email });
-    console.log(instructor);
+    console.dir(instructor, { depth: null });
     
     if (!instructor) {
       return res.status(400).json({ message: 'Invalid credentials' });

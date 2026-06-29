@@ -12,6 +12,7 @@ function AddCourse() {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleImageChange = (e) => {
@@ -29,6 +30,7 @@ function AddCourse() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError('');
 
     try {
       const formData = new FormData();
@@ -37,10 +39,21 @@ function AddCourse() {
       formData.append('description', description);
       formData.append('image', image);
 
-      await courseAPI.create(formData);
+      console.log('=== FormData Contents ===');
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      const response = await courseAPI.create(formData);
+      console.log('=== Response ===');
+      console.dir(response, { depth: null });
       navigate('/admin/courses');
     } catch (err) {
-      console.error(err);
+      console.error('=== Full Error Object ===');
+      console.dir(err, { depth: null });
+      const errorMessage = err.response?.data?.message || err.message || 'Something went wrong';
+      setError(errorMessage);
+      console.error('Error Message:', errorMessage);
     } finally {
       setLoading(false);
     }
@@ -63,6 +76,12 @@ function AddCourse() {
             <h1 className="text-2xl md:text-3xl font-bold text-slate-800">Add New Course</h1>
             <p className="text-slate-500 mt-1">Create a new course in the system</p>
           </div>
+          
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6">
+              {error}
+            </div>
+          )}
           
           <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
