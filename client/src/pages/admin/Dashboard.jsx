@@ -1,15 +1,17 @@
-// /Users/pranavmolawade/Documents/Pranav/Reactjs/Practice/client/src/pages/admin/Dashboard.jsx
 import { useEffect, useState } from 'react';
 import AdminSidebar from '../../components/AdminSidebar';
+import Loading from '../../components/Loading';
 import { courseAPI, instructorAPI, lectureAPI } from '../../services/api';
 import { FiBookOpen, FiUsers, FiCalendar } from 'react-icons/fi';
 
 function AdminDashboard() {
   const [stats, setStats] = useState({ courses: 0, instructors: 0, lectures: 0 });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
+        setLoading(true);
         const [coursesRes, instructorsRes, lecturesRes] = await Promise.all([
           courseAPI.getAll(),
           instructorAPI.getAll(),
@@ -22,10 +24,16 @@ function AdminDashboard() {
         });
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchStats();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   const statCards = [
     {

@@ -1,25 +1,33 @@
-// /Users/pranavmolawade/Documents/Pranav/Reactjs/Practice/client/src/pages/admin/CourseList.jsx
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AdminSidebar from '../../components/AdminSidebar';
+import Loading from '../../components/Loading';
 import { courseAPI, getImageUrl } from '../../services/api';
 import { FiPlus, FiEye, FiTrash2, FiBookOpen } from 'react-icons/fi';
 
 function CourseList() {
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchCourses = async () => {
     try {
+      setLoading(true);
       const res = await courseAPI.getAll();
       setCourses(res.data);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchCourses();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this course?')) {

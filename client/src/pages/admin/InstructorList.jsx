@@ -1,23 +1,31 @@
-// /Users/pranavmolawade/Documents/Pranav/Reactjs/Practice/client/src/pages/admin/InstructorList.jsx
 import { useEffect, useState } from 'react';
 import AdminSidebar from '../../components/AdminSidebar';
+import Loading from '../../components/Loading';
 import { instructorAPI } from '../../services/api';
 import { FiUsers } from 'react-icons/fi';
 
 function InstructorList() {
   const [instructors, setInstructors] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchInstructors = async () => {
       try {
+        setLoading(true);
         const res = await instructorAPI.getAll();
         setInstructors(res.data);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchInstructors();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex min-h-screen bg-slate-50">

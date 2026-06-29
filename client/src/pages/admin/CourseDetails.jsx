@@ -1,7 +1,7 @@
-// /Users/pranavmolawade/Documents/Pranav/Reactjs/Practice/client/src/pages/admin/CourseDetails.jsx
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AdminSidebar from '../../components/AdminSidebar';
+import Loading from '../../components/Loading';
 import { courseAPI, instructorAPI, lectureAPI, getImageUrl } from '../../services/api';
 import { FiArrowLeft, FiPlus, FiTrash2, FiCalendar, FiUsers } from 'react-icons/fi';
 
@@ -14,10 +14,12 @@ function CourseDetails() {
   const [selectedInstructor, setSelectedInstructor] = useState('');
   const [lectureDate, setLectureDate] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const [courseRes, instructorsRes, lecturesRes] = await Promise.all([
           courseAPI.getById(id),
           instructorAPI.getAll(),
@@ -28,6 +30,8 @@ function CourseDetails() {
         setLectures(lecturesRes.data.filter(lecture => lecture.course._id === id));
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -64,7 +68,9 @@ function CourseDetails() {
     }
   };
 
-  if (!course) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex min-h-screen bg-slate-50">

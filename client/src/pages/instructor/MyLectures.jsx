@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import InstructorSidebar from '../../components/InstructorSidebar';
+import Loading from '../../components/Loading';
 import { useAuth } from '../../context/AuthContext';
 import { lectureAPI } from '../../services/api';
 import { FiCalendar, FiBookOpen } from 'react-icons/fi';
@@ -7,21 +8,29 @@ import { FiCalendar, FiBookOpen } from 'react-icons/fi';
 function MyLectures() {
   const { user } = useAuth();
   const [lectures, setLectures] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchLectures = async () => {
       try {
+        setLoading(true);
         const res = await lectureAPI.getByInstructor(user.id);
         const sorted = res.data.sort((a, b) => new Date(a.lectureDate) - new Date(b.lectureDate));
         setLectures(sorted);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
     if (user?.id) {
       fetchLectures();
     }
   }, [user]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex min-h-screen bg-slate-50">
