@@ -24,6 +24,28 @@ app.get('/', (req, res) => {
   res.send({ title: 'Course Management API' });
 });
 
+// Test Cloudinary config
+app.get('/api/test-cloudinary', async (req, res) => {
+  try {
+    console.log('=== Testing Cloudinary ===');
+    const result = await cloudinary.api.ping();
+    console.log('Cloudinary Ping Result:', result);
+    res.json({ success: true, message: 'Cloudinary is working!', result });
+  } catch (error) {
+    console.error('Cloudinary Error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Cloudinary not working', 
+      error: error.message,
+      config: {
+        cloudName: process.env.CLOUDINARY_CLOUD_NAME ? 'Set' : 'NOT SET',
+        apiKey: process.env.CLOUDINARY_API_KEY ? 'Set' : 'NOT SET',
+        apiSecret: process.env.CLOUDINARY_API_SECRET ? 'Set' : 'NOT SET'
+      }
+    });
+  }
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/instructors', instructorRoutes);
 app.use('/api/courses', courseRoutes);
