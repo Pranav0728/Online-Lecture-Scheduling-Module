@@ -27,37 +27,53 @@ function AddCourse() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
+//     setError('');
 
-    try {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('level', level);
-      formData.append('description', description);
-      formData.append('image', image);
+//     try {
+//       const formData = new FormData();
+//       formData.append('name', name);
+//       formData.append('level', level);
+//       formData.append('description', description);
+//       formData.append('image', image);
 
-      console.log('=== FormData Contents ===');
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
+//       console.log('=== FormData Contents ===');
+//       for (let [key, value] of formData.entries()) {
+//         console.log(key, value);
+//       }
 
-      const response = await courseAPI.create(formData);
-      console.log('=== Response ===');
-      console.dir(response, { depth: null });
-      navigate('/admin/courses');
-    } catch (err) {
-      console.error('=== Full Error Object ===');
-      console.dir(err, { depth: null });
-      const errorMessage = err.response?.data?.message || err.message || 'Something went wrong';
-      setError(errorMessage);
-      console.error('Error Message:', errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
+//       const response = await courseAPI.create(formData);
+//       console.log('=== Response ===');
+//       console.dir(response, { depth: null });
+//       navigate('/admin/courses');
+//     } catch (err) {
+//       console.error('=== Full Error Object ===');
+//       console.dir(err, { depth: null });
+//       const errorMessage = err.response?.data?.message || err.message || 'Something went wrong';
+//       setError(errorMessage);
+//       console.error('Error Message:', errorMessage);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await courseAPI.create({
+      name,
+      level,
+      description,
+      image: "https://dummyimage.com/600x400"
+    });
+
+    console.log(response.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
   return (
     <div className="flex min-h-screen bg-slate-50">
