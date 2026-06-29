@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://online-lecture-scheduling-module-eight.vercel.app/api';
+const API_URL = 'https://online-lecture-scheduling-module-theta.vercel.app/api';
 
 const api = axios.create({
   baseURL: API_URL,
