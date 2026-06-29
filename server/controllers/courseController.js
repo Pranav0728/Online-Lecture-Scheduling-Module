@@ -91,16 +91,16 @@ export const updateCourse = async (req, res) => {
       return res.status(404).json({ message: 'Course not found' });
     }
 
-    const { name, level, description } = req.body;
-    let image = course.image;
+    const { name, level, description, image } = req.body;
+    let updatedImage = course.image;
     
-    if (req.file) {
-      image = req.file.secure_url || req.file.url || req.file.path;
+    if (image) {
+      updatedImage = image;
     }
 
     course = await Course.findByIdAndUpdate(
       req.params.id,
-      { name, level, description, image },
+      { name, level, description, image: updatedImage },
       { new: true }
     );
 

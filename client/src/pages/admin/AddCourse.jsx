@@ -1,24 +1,28 @@
-// /Users/pranavmolawade/Documents/Pranav/Reactjs/Practice/client/src/pages/admin/AddCourse.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminSidebar from '../../components/AdminSidebar';
 import { courseAPI } from '../../services/api';
 import { FiArrowLeft, FiUpload } from 'react-icons/fi';
 
+// Replace these with your actual Cloudinary details
+const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'your-cloud-name';
+const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'your-unsigned-preset';
+
 function AddCourse() {
   const [name, setName] = useState('');
   const [level, setLevel] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(file);
+      setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
@@ -27,53 +31,55 @@ function AddCourse() {
     }
   };
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     setError('');
+  const uploadToCloudinary = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
 
-//     try {
-//       const formData = new FormData();
-//       formData.append('name', name);
-//       formData.append('level', level);
-//       formData.append('description', description);
-//       formData.append('image', image);
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+      {
+        method: 'POST',
+        body: formData,
+      }
+    );
 
-//       console.log('=== FormData Contents ===');
-//       for (let [key, value] of formData.entries()) {
-//         console.log(key, value);
-//       }
+    const data = await response.json();
+    if (!data.secure_url) {
+      throw new Error('Failed to upload image to Cloudinary');
+    }
+    return data.secure_url;
+  };
 
-//       const response = await courseAPI.create(formData);
-//       console.log('=== Response ===');
-//       console.dir(response, { depth: null });
-//       navigate('/admin/courses');
-//     } catch (err) {
-//       console.error('=== Full Error Object ===');
-//       console.dir(err, { depth: null });
-//       const errorMessage = err.response?.data?.message || err.message || 'Something went wrong';
-//       setError(errorMessage);
-//       console.error('Error Message:', errorMessage);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setUploading(true);
+    setError('');
 
-  try {
-    const response = await courseAPI.create({
-      name,
-      level,
-      description,
-      image: "https://dummyimage.com/600x400"
-    });
+    try {
+      let imageUrl = '';
+      if (imageFile) {
+        imageUrl = await uploadToCloudinary(imageFile);
+      }
 
-    console.log(response.data);
-  } catch (err) {
-    console.log(err);
-  }
-};
+      const response = await courseAPI.create({
+        name,
+        level,
+        description,
+        image: imageUrl || 'https://dummyimage.com/600x400'
+      });
+
+      console.log(response.data);
+      navigate('/admin/courses');
+    } catch (err) {
+      console.log(err);
+      setError(err.message || 'Something went wrong');
+    } finally {
+      setLoading(false);
+      setUploading(false);
+    }
+  };
 
   return (
     <div className="flex min-h-screen bg-slate-50">
