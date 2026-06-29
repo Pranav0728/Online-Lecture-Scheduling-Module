@@ -1,12 +1,19 @@
 import express from 'express';
 import cors from 'cors';
 import connectDB from './config/db.js';
+import { cloudinary } from './config/cloudinary.js';
 import authRoutes from './routes/auth.js';
 import instructorRoutes from './routes/instructors.js';
 import courseRoutes from './routes/courses.js';
 import lectureRoutes from './routes/lectures.js';
 
 connectDB();
+
+// Check Cloudinary config
+console.log('=== Cloudinary Config Check ===');
+console.log('Cloud Name:', process.env.CLOUDINARY_CLOUD_NAME ? 'Set' : 'NOT SET');
+console.log('API Key:', process.env.CLOUDINARY_API_KEY ? 'Set' : 'NOT SET');
+console.log('API Secret:', process.env.CLOUDINARY_API_SECRET ? 'Set' : 'NOT SET');
 
 const app = express();
 
