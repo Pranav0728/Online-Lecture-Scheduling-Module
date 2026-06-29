@@ -32,6 +32,9 @@ function AddCourse() {
   };
 
   const uploadToCloudinary = async (file) => {
+    console.log('Uploading to Cloudinary with preset:', CLOUDINARY_UPLOAD_PRESET);
+    console.log('Cloud Name:', CLOUDINARY_CLOUD_NAME);
+    
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
@@ -45,8 +48,10 @@ function AddCourse() {
     );
 
     const data = await response.json();
+    console.log('Cloudinary response:', data);
+    
     if (!data.secure_url) {
-      throw new Error('Failed to upload image to Cloudinary');
+      throw new Error(data.error?.message || 'Failed to upload image to Cloudinary');
     }
     return data.secure_url;
   };
@@ -162,7 +167,7 @@ function AddCourse() {
                       <button
                         type="button"
                         onClick={() => {
-                          setImage(null);
+                          setImageFile(null);
                           setImagePreview(null);
                         }}
                         className="text-sm text-red-600 hover:text-red-700 font-medium"
@@ -200,7 +205,7 @@ function AddCourse() {
                   {loading ? (
                     <div className="flex items-center justify-center gap-2">
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      Creating Course...
+                      {uploading ? 'Uploading Image...' : 'Creating Course...'}
                     </div>
                   ) : 'Create Course'}
                 </button>
