@@ -3,11 +3,9 @@ import Course from '../models/Course.js';
 export const createCourse = async (req, res) => {
   try {
     console.log('=== Request Body ===');
-    console.log(req.body);
+    console.dir(req.body, { depth: null });
     console.log('=== Request File ===');
-    console.log(req.file);
-    console.log('=== All Request Files ===');
-    console.log(req.files);
+    console.dir(req.file, { depth: null });
 
     const { name, level, description } = req.body;
 
@@ -17,13 +15,10 @@ export const createCourse = async (req, res) => {
       return res.status(400).json({ message: 'Image file is required' });
     }
 
-    // Check what properties are available on req.file
-    console.log('req.file keys:', Object.keys(req.file));
-    console.log('req.file.path:', req.file.path);
-    console.log('req.file.filename:', req.file.filename);
-    console.log('req.file.url:', req.file.url);
+    // Get Cloudinary URL (use secure_url for HTTPS)
+    const image = req.file.secure_url || req.file.url || req.file.path;
+    console.log('Using image URL:', image);
 
-    const image = req.file.path || req.file.url;
     if (!image) {
       console.error('No image URL found in req.file');
       return res.status(400).json({ message: 'Failed to get image URL' });
@@ -37,18 +32,14 @@ export const createCourse = async (req, res) => {
     });
 
     console.log('=== Course to Save ===');
-    console.log(course);
+    console.dir(course, { depth: null });
 
     await course.save();
     console.log('Course saved successfully');
     res.json(course);
   } catch (error) {
     console.error('=== FULL ERROR ===');
-    console.error(error);
-    console.error('=== ERROR MESSAGE ===');
-    console.error(error.message);
-    console.error('=== ERROR STACK ===');
-    console.error(error.stack);
+    console.dir(error, { depth: null });
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
@@ -85,7 +76,7 @@ export const updateCourse = async (req, res) => {
     let image = course.image;
     
     if (req.file) {
-      image = req.file.path; // Cloudinary URL
+      image = req.file.secure_url || req.file.url || req.file.path;
     }
 
     course = await Course.findByIdAndUpdate(
@@ -96,8 +87,8 @@ export const updateCourse = async (req, res) => {
 
     res.json(course);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    console.dir(error, { depth: null });
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
