@@ -8,8 +8,6 @@ import { FiArrowLeft, FiUpload } from 'react-icons/fi';
 const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'onlinelecture';
 const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'OnlineLecture';
 
-console.log('CLOUDINARY CONFIG:', { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET });
-
 function AddCourse() {
   const [name, setName] = useState('');
   const [level, setLevel] = useState('');
