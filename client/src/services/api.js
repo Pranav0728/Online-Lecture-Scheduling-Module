@@ -27,12 +27,8 @@ export const instructorAPI = {
 export const courseAPI = {
   getAll: () => api.get('/courses'),
   getById: (id) => api.get(`/courses/${id}`),
-  create: (data) => api.post('/courses', data, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-  }),
-  update: (id, data) => api.put(`/courses/${id}`, data, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-  }),
+  create: (data) => api.post("/courses", data),
+  update: (id, data) => api.put(`/courses/${id}`, data),
   delete: (id) => api.delete(`/courses/${id}`),
 };
 
