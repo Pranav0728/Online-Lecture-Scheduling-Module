@@ -5,7 +5,7 @@
 - Backend: Node.js + Express
 - Database: MongoDB + Mongoose
 - Authentication: JWT
-- Image Upload: Multer (store locally)
+- Image Upload: Cloudinary
 
 ## Project Setup
 
@@ -85,6 +85,6 @@ Use any of the dummy instructors:
 - DELETE `/api/lectures/:id` - Delete lecture
 
 ## Deployment
-- Frontend: Vercel/Netlify
-- Backend: Render/Railway
+- Frontend: Vercel
+- Backend: Vercel
 - Database: MongoDB Atlas
