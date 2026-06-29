@@ -28,7 +28,6 @@ export const createCourse = async (req, res) => {
       name,
       level,
       description,
-      image
     });
 
     console.log('=== Course to Save ===');
