@@ -5,7 +5,7 @@
 - Backend: Node.js + Express
 - Database: MongoDB + Mongoose
 - Authentication: JWT
-- Image Upload: Cloudinary
+- Image Upload: Cloudinary 
 
 ## Project Setup
 
@@ -29,7 +29,19 @@ Create a `.env` file in the server directory:
 DB_URI=your-mongodb-uri
 JWT_SECRET=your-secret-key
 PORT=8080
+CLOUDINARY_CLOUD_NAME=onlinelecture
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+
 ```
+
+Create a `.env` file in the client direcrtory:
+```env
+VITE_CLOUDINARY_CLOUD_NAME= your-cloudinary
+VITE_CLOUDINARY_UPLOAD_PRESET= your-upload-preset
+```
+
+
 
 ### Running the Application
 
