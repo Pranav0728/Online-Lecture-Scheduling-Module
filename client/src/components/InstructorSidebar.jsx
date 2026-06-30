@@ -1,4 +1,3 @@
-// /Users/pranavmolawade/Documents/Pranav/Reactjs/Practice/client/src/components/InstructorSidebar.jsx
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useSidebar } from '../context/SidebarContext';

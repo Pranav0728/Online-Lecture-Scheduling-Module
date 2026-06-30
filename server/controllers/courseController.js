@@ -1,48 +1,5 @@
 import Course from '../models/Course.js';
 
-// export const createCourse = async (req, res) => {
-//   try {
-//     console.log('=== Request Body ===');
-//     console.dir(req.body, { depth: null });
-//     console.log('=== Request File ===');
-//     console.dir(req.file, { depth: null });
-
-//     const { name, level, description } = req.body;
-
-//     // Check if file exists
-//     if (!req.file) {
-//       console.error('No file uploaded');
-//       return res.status(400).json({ message: 'Image file is required' });
-//     }
-
-//     // Get Cloudinary URL (use secure_url for HTTPS)
-//     const image = req.file.secure_url || req.file.url || req.file.path;
-//     console.log('Using image URL:', image);
-
-//     if (!image) {
-//       console.error('No image URL found in req.file');
-//       return res.status(400).json({ message: 'Failed to get image URL' });
-//     }
-
-//     const course = new Course({
-//       name,
-//       level,
-//       description,
-//       image
-//     });
-
-//     console.log('=== Course to Save ===');
-//     console.dir(course, { depth: null });
-
-//     await course.save();
-//     console.log('Course saved successfully');
-//     res.json(course);
-//   } catch (error) {
-//     console.error('=== FULL ERROR ===');
-//     console.dir(error, { depth: null });
-//     res.status(500).json({ message: 'Server error', error: error.message });
-//   }
-// };
 export const createCourse = async (req, res) => {
   try {
     const { name, level, description, image } = req.body;

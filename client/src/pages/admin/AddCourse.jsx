@@ -4,7 +4,6 @@ import AdminSidebar from '../../components/AdminSidebar';
 import { courseAPI } from '../../services/api';
 import { FiArrowLeft, FiUpload } from 'react-icons/fi';
 
-// Replace these with your actual Cloudinary details
 const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'onlinelecture';
 const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'OnlineLecture';
 
